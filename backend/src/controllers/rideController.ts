@@ -63,10 +63,10 @@ export const estimateRide = async (
           // Buscar motoristas disponíveis no banco de dados
           const dbInstance = await db;
           const rows = await dbInstance.all<Driver[]>(
-            "SELECT * FROM drivers WHERE min_distance <= ?",
+            "SELECT id, name, description, vehicle, rating, price_per_km as pricePerKm FROM drivers WHERE min_distance <= ?",
             [distance]
           );
-
+          console.log(rows);
           // Processar os motoristas encontrados
           const drivers = rows.map((driver) => ({
             id: driver.id,
@@ -79,7 +79,7 @@ export const estimateRide = async (
             },
             value: parseFloat((distance * driver.pricePerKm).toFixed(2)),
           }));
-
+          console.log(drivers);
           // Retornar a resposta ao cliente com dados da viagem e motoristas disponíveis
           res.status(200).json({
             origin: {
@@ -199,6 +199,7 @@ export const confirmRide = async (
   }
 };
 
+// Endpoint para buscar as corridas
 export const getRides = async (req: Request, res: Response): Promise<void> => {
   const { customer_id } = req.params;
   const { driver_id } = req.query;
