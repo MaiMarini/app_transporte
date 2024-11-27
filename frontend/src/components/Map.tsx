@@ -27,7 +27,8 @@ const Map: React.FC<MapProps> = ({ origin, destination }) => {
       script.src = scriptUrl;
       script.async = true;
       script.defer = true;
-      script.onload = () => setScriptLoaded(true); // Marca o script como carregado
+      // Marca o script como carregado
+      script.onload = () => setScriptLoaded(true);
 
       document.head.appendChild(script);
     } catch (err) {
@@ -37,7 +38,8 @@ const Map: React.FC<MapProps> = ({ origin, destination }) => {
   };
 
   useEffect(() => {
-    loadGoogleMapsScript(); // Carregar o script do Google Maps
+    // Carregar o script do Google Maps
+    loadGoogleMapsScript();
   }, []);
 
   // Função para geocodificar os endereços
@@ -48,7 +50,7 @@ const Map: React.FC<MapProps> = ({ origin, destination }) => {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ address }, (results, status) => {
       if (status === "OK" && results && results.length > 0) {
-        const location = results[0].geometry.location; // Agora sabemos que 'results' não é null
+        const location = results[0].geometry.location;
         callback(location);
       } else {
         setError("Não foi possível geocodificar o endereço.");
@@ -78,18 +80,18 @@ const Map: React.FC<MapProps> = ({ origin, destination }) => {
             return;
           }
 
-          // Agora, com as coordenadas, solicita a rota
+          // Solicita a rota
           const directionsService = new google.maps.DirectionsService();
           directionsService.route(
             {
               origin: originLocation,
               destination: destinationLocation,
-              travelMode: google.maps.TravelMode.DRIVING, // Você pode mudar para WALKING, BICYCLING, ou TRANSIT
+              travelMode: google.maps.TravelMode.DRIVING,
             },
             (result, status) => {
               if (status === "OK") {
                 setDirections(result);
-                setError(null); // Limpa o erro
+                setError(null);
               } else {
                 setError("Não foi possível calcular a rota.");
               }
@@ -118,7 +120,8 @@ const Map: React.FC<MapProps> = ({ origin, destination }) => {
           <GoogleMap
             id="map"
             mapContainerStyle={{ width: "100%", height: "500px" }}
-            center={{ lat: -23.55052, lng: -46.633308 }} // Coordenadas padrão (São Paulo)
+            // Coordenadas padrão (São Paulo)
+            center={{ lat: -23.55052, lng: -46.633308 }}
             zoom={12}
           >
             {directions && <DirectionsRenderer directions={directions} />}

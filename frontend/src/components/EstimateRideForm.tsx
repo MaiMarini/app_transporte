@@ -7,7 +7,7 @@ const EstimateRideForm: React.FC = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [estimate, setEstimate] = useState<any>(null);
-  const [selectedDriver, setSelectedDriver] = useState<any>(null); // Armazenar motorista selecionado
+  const [selectedDriver, setSelectedDriver] = useState<any>(null);
   const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -15,7 +15,8 @@ const EstimateRideForm: React.FC = () => {
     try {
       const data = await estimateRide(customerId, origin, destination);
       setEstimate(data);
-      setError(""); // Limpa qualquer erro anterior
+      // Limpa qualquer erro anterior
+      setError("");
     } catch (error) {
       console.error("Erro ao estimar a viagem:", error);
       setError("Erro ao estimar a viagem. Tente novamente.");
@@ -39,9 +40,18 @@ const EstimateRideForm: React.FC = () => {
     };
 
     try {
-      await confirmRide(rideDetails); // Chama a função para salvar a viagem
+      // Chama a função para salvar a viagem
+      await confirmRide(rideDetails);
       alert("Viagem confirmada com sucesso!");
-      setEstimate(null); // Limpa a estimativa após confirmação
+
+      // Limpa os estados após a confirmação
+      setEstimate(null);
+      setCustomerId("");
+      setOrigin("");
+      setDestination("");
+      setSelectedDriver(null);
+      setEstimate(null);
+      setError("");
     } catch (error) {
       console.error("Erro ao confirmar a viagem:", error);
       setError("Erro ao confirmar a viagem. Tente novamente.");
@@ -49,61 +59,75 @@ const EstimateRideForm: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="ID do Cliente"
-          value={customerId}
-          onChange={(e) => setCustomerId(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Origem"
-          value={origin}
-          onChange={(e) => setOrigin(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Destino"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          required
-        />
-        <button type="submit">Estimar</button>
-      </form>
+    <div>
+      <div>
+        <form className="container" onSubmit={handleSubmit}>
+          <h3>Estimar Viagens</h3>
+          <input
+            type="text"
+            placeholder="ID do Cliente"
+            value={customerId}
+            onChange={(e) => setCustomerId(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Origem"
+            value={origin}
+            onChange={(e) => setOrigin(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Destino"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+            required
+          />
+          <button type="submit">Estimar viagem</button>
+        </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
       {estimate && (
-        <div>
+        <div className="estimation-container">
           <h3>Estimativa</h3>
           <p>Distância: {estimate.distance} km</p>
           <p>Duração: {estimate.duration}</p>
-          <Map origin={origin} destination={destination} />
-          <h4>Motoristas Disponíveis:</h4>
-          <ul>
-            {estimate.options.map((driver: any) => (
-              <li key={driver.id}>
-                <label>
-                  <input
-                    type="radio"
-                    name="driver"
-                    value={driver.id}
-                    onChange={() => setSelectedDriver(driver)}
-                  />
-                  <strong>{driver.name}</strong> - {driver.description} <br />{" "}
-                  R$ {driver.value} - <br />
-                  <em>Rating:</em> {driver.review.comment}
-                  <br />{" "}
-                </label>
-              </li>
-            ))}
-          </ul>
 
-          <button onClick={handleConfirm}>Confirmar Viagem</button>
+          <Map origin={origin} destination={destination} />
+
+          <div className="drivers-list">
+            <h4>Motoristas Disponíveis:</h4>
+            <ul>
+              {estimate.options.map((driver: any) => (
+                <li key={driver.id}>
+                  <label>
+                    <strong>{driver.name}</strong> - {driver.description} <br />
+                    R$ {driver.value} <br />
+                    <em>Rating:</em> {driver.review.comment}
+                    <input
+                      type="radio"
+                      name="driver"
+                      value={driver.id}
+                      onChange={() => setSelectedDriver(driver)}
+                    />
+                    <button
+                      className={`estimate-button ${
+                        selectedDriver?.id === driver.id ? "selected" : ""
+                      }`}
+                      onClick={() => setSelectedDriver(driver)}
+                    >
+                      Escolher
+                    </button>
+                  </label>
+                </li>
+              ))}
+            </ul>
+            <button className="confirm-button" onClick={handleConfirm}>
+              Confirmar Viagem
+            </button>
+          </div>
         </div>
       )}
     </div>

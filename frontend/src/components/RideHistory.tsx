@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { getRides } from "../services/rideService";
 
 const RideHistory: React.FC = () => {
-  const [customerId, setCustomerId] = useState(""); // ID do cliente
-  const [rides, setRides] = useState<any[]>([]); // Lista de viagens
-  const [showHistory, setShowHistory] = useState(false); // Controla a exibição do histórico
+  const [customerId, setCustomerId] = useState("");
+  const [rides, setRides] = useState<any[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   // Função para carregar o histórico de viagens
   const fetchRides = async () => {
@@ -18,29 +18,38 @@ const RideHistory: React.FC = () => {
 
   // Função para exibir o histórico ao clicar no botão
   const handleShowHistory = () => {
-    setShowHistory(true); // Altera o estado para exibir o histórico
-    fetchRides(); // Carrega as viagens
+    if (!customerId.trim()) {
+      alert("Por favor, insira um ID de cliente.");
+      return;
+    }
+    setShowHistory(true);
+    fetchRides();
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="ID do Cliente"
-        value={customerId}
-        onChange={(e) => setCustomerId(e.target.value)}
-      />
-      <button onClick={handleShowHistory}>Exibir Histórico</button>
+    <div className="history-container">
+      <h3>Histórico de Viagens</h3>
+      <div className="history-input-container">
+        <input
+          type="text"
+          placeholder="ID do Cliente"
+          value={customerId}
+          onChange={(e) => setCustomerId(e.target.value)}
+        />
+        <button onClick={handleShowHistory}>Exibir Histórico</button>
+      </div>
 
       {/* Exibe o histórico de viagens se showHistory for true */}
       {showHistory && (
-        <div>
-          <h2>Histórico de Viagens</h2>
+        <div className="history-container">
           <ul>
             {rides.length > 0 ? (
               rides.map((ride: any) => (
                 <li key={ride.id}>
-                  {ride.origin} → {ride.destination} - R$ {ride.value}
+                  <strong>
+                    {ride.origin} → {ride.destination}
+                  </strong>{" "}
+                  - R$ {ride.value}
                 </li>
               ))
             ) : (
