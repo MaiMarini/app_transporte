@@ -7,7 +7,7 @@ import router from "./routes/index";
 dotenv.config();
 
 // Configurações do servidor
-const PORT = process.env.PORT || 8080; // Porta padrão ou a definida no .env
+const PORT = process.env.PORT || 8080;
 const DATABASE_PATH = process.env.DATABASE_PATH || "./database.sqlite";
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 

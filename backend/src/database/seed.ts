@@ -1,4 +1,4 @@
-import db from "./database"; // Importando a conexão com o banco de dados
+import db from "./database";
 
 const seedDatabase = async () => {
   try {
@@ -74,7 +74,7 @@ const seedDatabase = async () => {
     console.error("Erro ao inicializar o banco de dados:", error);
   } finally {
     // Fechar a conexão com o banco de dados
-    const dbInstance = await db; // Novamente esperando pela resolução
+    const dbInstance = await db;
     await dbInstance.close();
   }
 };

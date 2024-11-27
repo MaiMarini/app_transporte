@@ -48,8 +48,7 @@ export const estimateRide = async (
       } else {
         // Extraindo a primeira rota e a primeira perna
         const route = routes[0];
-        const legs = route.legs[0]; // Assumindo que a rota tem apenas uma perna
-
+        const legs = route.legs[0];
         if (!legs) {
           res.status(400).json({
             error_code: "INVALID_ROUTE",
@@ -57,7 +56,7 @@ export const estimateRide = async (
               "A rota não pôde ser calculada com os dados fornecidos.",
           });
         } else {
-          const distance = legs.distance.value / 1000; // em quilômetros
+          const distance = legs.distance.value / 1000;
           const duration = legs.duration.text;
 
           // Buscar motoristas disponíveis no banco de dados
@@ -67,6 +66,7 @@ export const estimateRide = async (
             [distance]
           );
           console.log(rows);
+
           // Processar os motoristas encontrados
           const drivers = rows.map((driver) => ({
             id: driver.id,
@@ -80,6 +80,7 @@ export const estimateRide = async (
             value: parseFloat((distance * driver.pricePerKm).toFixed(2)),
           }));
           console.log(drivers);
+
           // Retornar a resposta ao cliente com dados da viagem e motoristas disponíveis
           res.status(200).json({
             origin: {
@@ -92,7 +93,8 @@ export const estimateRide = async (
             },
             distance,
             duration,
-            options: drivers.sort((a, b) => a.value - b.value), // Ordenar motoristas pelo valor
+            // Ordenar motoristas pelo valor
+            options: drivers.sort((a, b) => a.value - b.value),
           });
         }
       }
