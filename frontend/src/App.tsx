@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css"; // Importe o arquivo CSS
+import "./styles/App.css"; // Importe o arquivo CSS
 import EstimateRideForm from "./components/EstimateRideForm";
 import RideHistory from "./components/RideHistory";
 

@@ -33,14 +33,14 @@ form button {
 }
 
 form button {
-  background-color: #4caf50;
+  background-color: #03a877;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 form button:hover {
-  background-color: #45a049;
+  background-color: #75c9ad;
 }
 
 .estimation-container {
@@ -55,7 +55,7 @@ form button:hover {
 .estimation-container h3,
 .estimation-container h4 {
   margin-bottom: 10px;
-  color: #333;
+  color: #1c1933;
 }
 
 .estimation-container p {
@@ -71,7 +71,7 @@ form button:hover {
 /* Container para as informações do motorista */
 .driver-info {
   font-size: 14px;
-  color: #333;
+  color: #1c1933;
 }
 
 .drivers-list li {
@@ -94,7 +94,7 @@ form button:hover {
   right: 10px;
   padding: 5px 10px;
   font-size: 12px;
-  background-color: #4caf50;
+  background-color: #03a877;
   color: white;
   border: none;
   border-radius: 5px;
@@ -104,12 +104,12 @@ form button:hover {
 
 /* Efeito hover do botão */
 .estimate-button:hover {
-  background-color: #45a049;
+  background-color: #75c9ad;
 }
 
 /* Cor quando o motorista é selecionado */
 .estimate-button.selected {
-  background-color: #0056b3;
+  background-color: #1f73b7;
 }
 
 /* Remove o estilo padrão do radio */
@@ -120,7 +120,7 @@ input[type="radio"] {
 .confirm-button {
   margin-top: 15px;
   padding: 15px;
-  background-color: #007bff;
+  background-color: #060937;
   color: white;
   font-size: 18px;
   font-weight: bold;
@@ -131,7 +131,7 @@ input[type="radio"] {
 }
 
 .confirm-button:hover {
-  background-color: #0056b3;
+  background-color: #1f73b7;
 }
 
 /* Estilo para o histórico de viagens */
@@ -149,7 +149,7 @@ input[type="radio"] {
 
 .history-container h3 {
   margin-bottom: 10px;
-  color: #333;
+  color: #1c1933;
 }
 
 .history-container ul {
@@ -187,7 +187,7 @@ input[type="radio"] {
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #4caf50;
+  background-color: #03a877;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -195,7 +195,7 @@ input[type="radio"] {
 }
 
 .history-container button:hover {
-  background-color: #45a049;
+  background-color: #75c9ad;
 }
 
 /* Responsividade */
@@ -214,3 +214,13 @@ input[type="radio"] {
     width: 80%;
   }
 }
+
+/* Tabela de cores
+Verde escuro = #03a877
+Verde médio = #75c9ad
+Verde claro = #a8dac9
+Roxo escuro = #1c1933
+Azul escuro = #060937
+Azul claro = #1f73b7
+Branco = #ffffff
+*/
