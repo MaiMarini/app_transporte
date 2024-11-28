@@ -21,7 +21,13 @@ export const confirmRide = async (rideDetails: any) => {
 };
 
 // Obter histórico de viagens
-export const getRides = async (customerId: string) => {
-  const response = await api.get(`/ride/${customerId}`);
+export const getRides = async (customerId: string, driverName?: string) => {
+  const params = new URLSearchParams();
+  params.append("customer_id", customerId);
+  if (driverName) {
+    params.append("driver_name", driverName);
+  }
+
+  const response = await api.get(`/ride/${customerId}?${params.toString()}`);
   return response.data;
 };

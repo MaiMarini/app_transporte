@@ -203,11 +203,11 @@ export const confirmRide = async (
 
 // Endpoint para buscar as corridas
 export const getRides = async (req: Request, res: Response): Promise<void> => {
-  const { customer_id } = req.params;
-  const { driver_id } = req.query;
+  const { customer_id } = req.query;
+  const { driver_name } = req.query;
 
-  // Validação do ID do cliente
-  if (!customer_id || customer_id.trim() === "") {
+  const customerIdStr = String(customer_id);
+  if (!customerIdStr.trim()) {
     res.status(400).json({
       error_code: "INVALID_DATA",
       error_description:
@@ -219,44 +219,27 @@ export const getRides = async (req: Request, res: Response): Promise<void> => {
   try {
     const dbInstance = await db;
 
-    // Validação do ID do motorista, se fornecido
-    if (driver_id) {
-      const driverExists = await dbInstance.get(
-        "SELECT id FROM drivers WHERE id = ?",
-        [driver_id]
-      );
-      if (!driverExists) {
-        res.status(400).json({
-          error_code: "INVALID_DRIVER",
-          error_description: `Motorista inválido`,
-        });
-        return;
-      }
-    }
-
     // Query para buscar viagens
     let query = `SELECT * FROM rides WHERE customer_id = ?`;
     const params: any[] = [customer_id];
 
-    if (driver_id) {
-      query += ` AND driver_id = ?`;
-      params.push(driver_id);
+    if (driver_name) {
+      query += ` AND driver_name LIKE ?`;
+      params.push(`%${driver_name}%`);
     }
 
     query += ` ORDER BY id DESC`;
 
     const rides = await dbInstance.all(query, params);
 
-    // Validação: Nenhuma viagem encontrada
     if (!rides || rides.length === 0) {
       res.status(404).json({
         error_code: "NO_RIDES_FOUND",
-        error_description: "Nenhum registro encontrado ",
+        error_description: "Nenhum registro encontrado",
       });
       return;
     }
 
-    // Construindo a resposta
     res.status(200).json({
       customer_id,
       rides: rides.map((ride: any) => ({

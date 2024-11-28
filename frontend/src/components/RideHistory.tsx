@@ -3,14 +3,17 @@ import { getRides } from "../services/rideService";
 
 const RideHistory: React.FC = () => {
   const [customerId, setCustomerId] = useState("");
+  const [driverName, setDriverName] = useState("");
   const [rides, setRides] = useState<any[]>([]);
   const [showHistory, setShowHistory] = useState(false);
 
   // Função para carregar o histórico de viagens
   const fetchRides = async () => {
     try {
-      const data = await getRides(customerId);
+      const data = await getRides(customerId, driverName);
+
       setRides(data.rides);
+      console.log("Rides retornadas:", data.rides);
     } catch (error) {
       console.error("Erro ao buscar histórico de viagens:", error);
     }
@@ -36,6 +39,12 @@ const RideHistory: React.FC = () => {
           value={customerId}
           onChange={(e) => setCustomerId(e.target.value)}
         />
+        <input
+          type="text"
+          placeholder="Nome do Motorista (Opcional)"
+          value={driverName}
+          onChange={(e) => setDriverName(e.target.value)}
+        />
         <button onClick={handleShowHistory}>Exibir Histórico</button>
       </div>
 
@@ -47,9 +56,13 @@ const RideHistory: React.FC = () => {
               rides.map((ride: any) => (
                 <li key={ride.id}>
                   <strong>
-                    {ride.origin} → {ride.destination}
+                    <p>Motorista: {ride.driver.name}</p>
+                    <p>
+                      {" "}
+                      {ride.origin} → {ride.destination}
+                    </p>
                   </strong>{" "}
-                  - R$ {ride.value}
+                  Valor total - R$ {ride.value}
                 </li>
               ))
             ) : (
